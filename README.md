@@ -25,6 +25,6 @@ This image is intended to only include runtime dependencies and software used as
 ## Launching the image
 
 An example command is:
-`docker run --rm -it --name umrt-base --pull=always ghcr.io/umroboticsteam/umrt-build-dev:main`  
+`docker run --rm -it --name umrt-base --pull=always ghcr.io/umroboticsteam/umrt-base-station:main`  
 This always checks for and downloads the latest image before starting, which may or may not be the ideal behaviour.
-If a specific version is wanted, such as `v0.0.1`, simply change `umrt-build-dev:main` to `umrt-build-dev:v0.0.1`.
+If a specific version is wanted, such as `v0.0.1`, simply change `umrt-base-station:main` to `umrt-base-station:v0.0.1`.
