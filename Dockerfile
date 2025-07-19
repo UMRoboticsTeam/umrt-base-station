@@ -8,6 +8,7 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf -
         nano \
         ros-humble-rviz2 \
         ros-humble-umrt-arm-joystick-operator=2.1.0-0jammy \
+        ros-humble-foxglove-bridge \
     && rm -rf /var/lib/apt/lists/*
 
 RUN sudo rm -f /etc/apt/sources.list.d/umrt_source.list
