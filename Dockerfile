@@ -13,7 +13,8 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-umrt-arm-joystick-operator=2.1.0-0jammy \
         ros-humble-foxglove-bridge \
         nodejs \
-    #&& sudo npm install -g tileserver-gl \
     && rm -rf /var/lib/apt/lists/*
+
+RUN bash -c "set -e && npm install -g tileserver-gl || echo 'tileserver-gl failed to install — skipping'"
 
 RUN sudo rm -f /etc/apt/sources.list.d/umrt_source.list
