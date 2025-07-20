@@ -4,7 +4,7 @@ RUN echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/umrt.asc] https://ra
 
 RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf --mount=type=secret,id=apt_pubkey,target=/etc/apt/keyrings/umrt.asc,mode=0644 \
 RUN \
-    curl -fsSL https://deb.nodesource,com/setup_20.x | sudo -E bash - \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - \
     && sudo apt update && sudo apt install -y \
         less \
         nano \
