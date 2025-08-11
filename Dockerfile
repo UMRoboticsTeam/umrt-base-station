@@ -10,6 +10,7 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf -
         ros-humble-joy \
         ros-humble-joy-teleop \
         ros-humble-teleop-twist-joy \
+        ros-humble-umrt-drivetrain-ros=0.1.3-0jammy \
         ros-humble-umrt-arm-joystick-operator=2.1.0-0jammy \
     && rm -rf /var/lib/apt/lists/*
 
