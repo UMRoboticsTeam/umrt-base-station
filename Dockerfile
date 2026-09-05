@@ -16,6 +16,16 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-umrt-arm-joystick-operator=2.1.0-0jammy \
         ros-humble-foxglove-bridge \
         nodejs \
+        ros-humble-foxglove-msgs \
+        ros-humble-foxglove-compressed-video-transport \
+        ros-humble-network-bridge \
+        ros-humble-usb-cam \
+        ros-humble-vision-msgs \
+        ros-humble-image-transport \
+        ros-humble-image-transport-plugins \
+        ros-humble-ffmpeg-image-transport \
+        ros-humble-ffmpeg-image-transport-msgs \
+        iputils-ping \
     && rm -rf /var/lib/apt/lists/*
 
 RUN bash -c "set -e && npm install -g tileserver-gl-light"
