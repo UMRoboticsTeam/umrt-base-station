@@ -43,7 +43,7 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-ffmpeg-image-transport \
         ros-humble-ffmpeg-image-transport-msgs \
         umrt-arm-firmware-lib \
-        zenoh-plugin-ros2dds \
+        zenoh-bridge-ros2dds \
     && rm -rf /var/lib/apt/lists/*
 
 RUN bash -c "set -e && npm install -g tileserver-gl-light"
@@ -52,7 +52,7 @@ RUN sudo rm -f /etc/apt/sources.list.d/umrt_source.list
 
 RUN sudo rm -f /var/lib/apt/lists/*
 
-RUN BRIDGE_WORKSPACE=$(which zenoh-plugin-ros2dds) 
+RUN BRIDGE_WORKSPACE=$(which zenoh-bridge-ros2dds) 
 
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
 RUN chmod +x /umrt_entrypoint.sh
