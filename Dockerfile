@@ -16,7 +16,7 @@ RUN set -x && \
     fi \
     && echo "$ARCH" \
     && echo "$ZENOH_ARCH" \ 
-    && curl -fsSL -o /tmp/zenoh-bridge.zip https://eclipse.org{ZENOH_ARCH}.zip \
+    && curl -fsSL -o /tmp/zenoh-bridge.zip https://eclipse.org{$ZENOH_ARCH}.zip \
     && unzip /tmp/zenoh-bridge.zip -d /usr/bin/ \
     && chmod +x /usr/bin/zenoh-bridge-ros2dds \
     && rm -rf /tmp/zenoh-bridge.zip
