@@ -3,6 +3,7 @@ FROM ros:humble-ros-base
 ENV ROS_DOMAIN_ID=0
 ENV ROS_LOCALHOST_ONLY=0
 ENV RMW_IMPLEMENTATION="rmw_fastrtps_cpp" 
+ENV BRIDGE_WORKSPACE="/usr/lib"
 
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key | gpg --dearmor --yes --output /etc/apt/keyrings/zenoh-public-key.gpg \
@@ -50,8 +51,6 @@ RUN bash -c "set -e && npm install -g tileserver-gl-light"
 RUN sudo rm -f /etc/apt/sources.list.d/umrt_source.list
 
 RUN sudo rm -f /var/lib/apt/lists/*
-
-RUN BRIDGE_WORKSPACE=$(which zenoh-plugin-ros2dds) 
 
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
 RUN chmod +x /umrt_entrypoint.sh
