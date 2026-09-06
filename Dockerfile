@@ -12,6 +12,8 @@ RUN curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key |
 RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
     --mount=type=secret,id=apt_pubkey,target=/etc/apt/keyrings/umrt.asc,mode=0644 \
     set -e \
+    && echo '#!/bin/sh\nextit 0' > /usr/bin/systemctl \
+    && chmod =X /usr/bin/systemctl \
     && curl -vL https://deb.nodesource.com/setup_20.x | bash - \
     && sudo apt update && sudo apt install -y \
         less \
@@ -46,5 +48,6 @@ RUN sudo rm -f /var/lib/apt/lists/*
 RUN BRIDGE_WORKSPACE=$(which zenoh-plugin-ros2dds) 
 
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
+RUN chmod +x /umrt_entrypoint.sh
 
 ENTRYPOINT ["/umrt_entrypoint.sh"]
