@@ -13,7 +13,7 @@ RUN mkdir -p /etc/apt/keyrings \
 # Need to install the zenoh-plugin-ros2dds before the umrt_source.list action
 RUN echo '#!/bin/sh\nexit 0' > /usr/local/bin/systemctl \
     && chmod +x /usr/local/bin/systemctl \
-    && apt-get update && apt-get install -y --no-install-recommends \
+    && sudo apt-get update && sudo apt-get install -y --no-install-recommends \
         zenoh-bridge-ros2dds \
     && rm -rf /var/lib/apt/lists/* \
     && rm /usr/local/bin/systemctl
