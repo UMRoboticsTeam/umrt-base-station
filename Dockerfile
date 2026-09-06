@@ -3,7 +3,7 @@ FROM ros:humble-ros-base
 ENV ROS_DOMAIN_ID=0
 ENV ROS_LOCALHOST_ONLY=0
 ENV RMW_IMPLEMENTATION="rmw_fastrtps_cpp" 
-ENV BRIDGE_WORKSPACE="/usr"
+ENV BRIDGE_WORKSPACE="/workspace/umrt-zenoh-bridge"
 
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key | gpg --dearmor --yes --output /etc/apt/keyrings/zenoh-public-key.gpg \

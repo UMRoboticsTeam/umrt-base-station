@@ -1,0 +1,34 @@
+name: bridge_base_stack
+
+x-ros-container: &ros_container
+  image: "${BRIDGE_BASE_IMAGE:-ghcr.io/umroboticsteam/umrt-build:comms-base-station}"
+
+services:
+  bridge_base:
+    <<: *ros_container
+    container_name: bridge_base
+    stdin_open: true
+    tty: true
+    init: true
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "${FOXGLOVE_HOST_BIND:-0.0.0.0}:8765:8765/tcp"
+    devices:
+      - "/dev/input:/dev/input"
+    volumes:
+      - "${REPO_DIR:-..}:/workspace/umrt-network-bridge-tests"
+    networks:
+      bridge_lo:
+        ipv4_address: 10.0.10.57
+      bridge_hi:
+        ipv4_address: 10.0.20.57
+      foxglove_local: {}
+
+networks:
+  foxglove_local:
+    driver: bridge
+  bridge_lo:
+    external: true
+  bridge_hi:
+    external: true

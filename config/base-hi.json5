@@ -1,0 +1,35 @@
+{
+  id: "ba5e20",
+  mode: "router",
+  listen: {
+    endpoints: [
+      "tcp/10.0.20.57:7447",
+    ],
+  },
+  scouting: {
+    multicast: {
+      enabled: false,
+    },
+    gossip: {
+      enabled: false,
+    },
+  },
+  plugins: {
+    ros2dds: {
+      nodename: "zenoh_bridge_base_hi",
+      ros_localhost_only: false,
+      allow: {
+        publishers: [],
+        subscribers: [
+          "^/rover/poe/encoded_video$",
+          "^/arm_cam0/image_raw/ffmpeg$",
+          "^/camera$",
+        ],
+        service_servers: [],
+        service_clients: [],
+        action_servers: [],
+        action_clients: [],
+      },
+    },
+  },
+}
