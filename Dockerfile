@@ -16,7 +16,7 @@ RUN mkdir -p /etc/apt/keyrings \
     && cat /etc/apt/sources.list.d/zenoh.list
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        zenoh-bridge-ros2dds \
+        zenoh-plugin-ros2dds \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/umrt.asc] https://raw.githubusercontent.com/UMRoboticsTeam/umrt-apt-repo/main/ humble main" > /etc/apt/sources.list.d/umrt_source.list
