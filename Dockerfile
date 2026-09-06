@@ -26,7 +26,7 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-image-transport-plugins \
         ros-humble-ffmpeg-image-transport \
         ros-humble-ffmpeg-image-transport-msgs \
-        umrt-arm-firware-lib \
+        umrt-arm-firmware-lib \
     && rm -rf /var/lib/apt/lists/*
 
 RUN bash -c "set -e && npm install -g tileserver-gl-light"
