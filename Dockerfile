@@ -11,7 +11,9 @@ RUN mkdir -p /etc/apt/keyrings \
     && cat /etc/apt/sources.list.d/zenoh.list
 
 # Need to install the zenoh-plugin-ros2dds before the umrt_source.list action
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN echo '#!/bin/sh\nextit 0' > /usr/local/bin/systemctl \
+    && chmod =X /usr/local/bin/systemctl \
+    && apt-get update && apt-get install -y --no-install-recommends \
         zenoh-bridge-ros2dds \
     && rm -rf /var/lib/apt/lists/*
 
@@ -20,8 +22,6 @@ RUN echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/umrt.asc] https://ra
 RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
     --mount=type=secret,id=apt_pubkey,target=/etc/apt/keyrings/umrt.asc,mode=0644 \
     set -e \
-    && echo '#!/bin/sh\nextit 0' > /usr/bin/systemctl \
-    && chmod =X /usr/bin/systemctl \
     && curl -vL https://deb.nodesource.com/setup_20.x | bash - \
     && sudo apt update && sudo apt install -y \
         less \
