@@ -3,7 +3,7 @@ FROM ros:humble-ros-base
 ENV ROS_DOMAIN_ID=0
 ENV ROS_LOCALHOST_ONLY=0
 ENV RMW_IMPLEMENTATION="rmw_fastrtps_cpp" 
-ENV BRIDGE_WORKSPACE="/usr/lib"
+ENV BRIDGE_WORKSPACE="/usr"
 
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key | gpg --dearmor --yes --output /etc/apt/keyrings/zenoh-public-key.gpg \
@@ -12,7 +12,7 @@ RUN mkdir -p /etc/apt/keyrings \
 
 # Need to install the zenoh-plugin-ros2dds before the umrt_source.list action
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        zenoh-plugin-ros2dds \
+        zenoh-bridge-ros2dds \
     && rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/umrt.asc] https://raw.githubusercontent.com/UMRoboticsTeam/umrt-apt-repo/main/ humble main" > /etc/apt/sources.list.d/umrt_source.list
