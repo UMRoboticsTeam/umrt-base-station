@@ -5,21 +5,18 @@ ENV ROS_LOCALHOST_ONLY=0
 ENV RMW_IMPLEMENTATION="rmw_fastrtps_cpp" 
 ENV BRIDGE_WORKSPACE="/usr"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        unzip \
-    && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key | gpg --dearmor --yes --output /etc/apt/keyrings/zenoh-public-key.gpg \
+    && echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/zenoh-public-key.gpg] https://download.eclipse.org/zenoh/debian-repo/ /" > /etc/apt/sources.list.d/zenoh.list \
+    && cat /etc/apt/sources.list.d/zenoh.list
 
-RUN set -x && \
-    ARCH=$(uname -m) && \
-    if [ "$ARCH" = "x86_64" ]; then ZENOH_ARCH="x86_64-unknown-linux-gnu"; \
-    elif [ "$ARCH" = "aarch64" ]; then ZENOH_ARCH="aarch64-unknown-linux-gnu"; \
-    fi \
-    && echo "$ARCH" \
-    && echo "$ZENOH_ARCH" \ 
-    && curl -fsSL -o /tmp/zenoh-bridge.zip "https://eclipse.org${ZENOH_ARCH}.zip" \
-    && unzip /tmp/zenoh-bridge.zip -d /usr/bin/ \
-    && chmod +x /usr/bin/zenoh-bridge-ros2dds \
-    && rm -rf /tmp/zenoh-bridge.zip
+# Need to install the zenoh-plugin-ros2dds before the umrt_source.list action
+RUN echo '#!/bin/sh\nexit 0' > /usr/local/bin/systemctl \
+    && chmod +x /usr/local/bin/systemctl \
+    && sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+        zenoh-bridge-ros2dds=0.11.0 \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm /usr/local/bin/systemctl
 
 RUN echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/umrt.asc] https://raw.githubusercontent.com/UMRoboticsTeam/umrt-apt-repo/main/ humble main" > /etc/apt/sources.list.d/umrt_source.list
 
