@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ################################
 # require_file
 #   Looks to see if the required file is found on the device
@@ -28,6 +30,9 @@ require_file() {
 main() {
   echo "[INFO - $(date +"%b %d %T")] Starting UMRT Basestation"
 
+  echo "[INFO - $(date +"%b %d %T")] Sourcing ros_entrypoint.sh"
+  source ./ros_entrypoint.sh
+  
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Stack"
   echo "[INFO - $(date +"%b %d %T")] Checking File Requirements"
   require_file "${config_dir}/base-lo.json5"
@@ -41,9 +46,6 @@ main() {
 
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
   zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-hi.json5" &
-
-  echo "[INFO - $(date +"%b %d %T")] Sourcing ros_entrypoint.sh"
-  source /ros_entrypoint.sh
 
   echo "[INFO - $(date +"%b %d %T")] Launching Arm Fireware"
   ros2 launch umrt-arm-firmware-lib joy.launch.py

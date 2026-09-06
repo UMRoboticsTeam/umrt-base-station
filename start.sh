@@ -12,4 +12,4 @@ fi
 export RES_MAPTILES_DIR=$(realpath "${MAPTILES_DIR}")
 export RES_CONFIG_DIR=$(realpath "${CONFIG_DIR}")
 
-docker compose -f "${REPO_DIR}/compose/compose-base.yaml" up -d --force-recreate --renew-anon-volumes
+docker compose -f "./compose-base.yaml" up -d --force-recreate --renew-anon-volumes
