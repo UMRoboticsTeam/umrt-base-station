@@ -13,8 +13,10 @@ RUN set -x && \
     ARCH=$(uname -m) && \
     if [ "$ARCH" = "x86_64" ]; then ZENOH_ARCH="x86_64-unknown-linux-gnu"; \
     elif [ "$ARCH" = "aarch64" ]; then ZENOH_ARCH="aarch64-unknown-linux-gnu"; \
-    fi && \
-    curl -fsSL -o /tmp/zenoh-bridge.zip "https://eclipse.org{ZENOH_ARCH}.zip" \
+    fi \
+    && echo "$ARCH" \
+    && echo "$ZENOH_ARCH" \ 
+    && curl -fsSL -o /tmp/zenoh-bridge.zip https://eclipse.org{ZENOH_ARCH}.zip
     && unzip /tmp/zenoh-bridge.zip -d /usr/bin/ \
     && chmod +x /usr/bin/zenoh-bridge-ros2dds \
     && rm -rf /tmp/zenoh-bridge.zip
