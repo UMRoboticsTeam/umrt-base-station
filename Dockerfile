@@ -4,17 +4,12 @@ ENV ROS_DOMAIN_ID=0
 ENV ROS_LOCALHOST_ONLY=0
 ENV RMW_IMPLEMENTATION="rmw_fastrtps_cpp" 
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        curl \
-        ca-certificates \
-        gnupg \
-    && rm -rf /var/lib/apt/lists/*
-
 RUN mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://download.eclipse.org/zenoh/debian-repo/zenoh-public-key | gpg --dearmor --yes --output /etc/apt/keyrings/zenoh-public-key.gpg \
     && echo "deb [arch=amd64,arm64 signed-by=/etc/apt/keyrings/zenoh-public-key.gpg] https://download.eclipse.org/zenoh/debian-repo/ /" > /etc/apt/sources.list.d/zenoh.list \
     && cat /etc/apt/sources.list.d/zenoh.list
 
+# Need to install the zenoh-plugin-ros2dds before the umrt_source.list action
 RUN apt-get update && apt-get install -y --no-install-recommends \
         zenoh-plugin-ros2dds \
     && rm -rf /var/lib/apt/lists/*
@@ -56,7 +51,7 @@ RUN sudo rm -f /etc/apt/sources.list.d/umrt_source.list
 
 RUN sudo rm -f /var/lib/apt/lists/*
 
-RUN BRIDGE_WORKSPACE=$(which zenoh-bridge-ros2dds) 
+RUN BRIDGE_WORKSPACE=$(which zenoh-plugin-ros2dds) 
 
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
 RUN chmod +x /umrt_entrypoint.sh
