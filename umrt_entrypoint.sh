@@ -35,8 +35,8 @@ main() {
   
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Stack"
   echo "[INFO - $(date +"%b %d %T")] Checking File Requirements"
-  require_file "${config_dir}/base-lo.json5"
-  require_file "${config_dir}/base-hi.json5"
+  require_file "${BRIDGE_WORKSPACE}/base-lo.json5"
+  require_file "${BRIDGE_WORKSPACE}/base-hi.json5"
 
   echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
   ros2 launch foxglove_bridge foxglove_bridge_launch.xml address:=0.0.0.0 port:=8765 &
