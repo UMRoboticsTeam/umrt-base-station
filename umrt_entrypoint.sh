@@ -47,8 +47,8 @@ main() {
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
   zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-hi.json5" &
 
-  echo "[INFO - $(date +"%b %d %T")] Launching Arm Fireware"
-  ros2 launch umrt_arm_firmware_lib joy.launch.py
+  echo "[INFO - $(date +"%b %d %T")] Launching Arm Fireware -- RMed"
+  ##ros2 launch umrt_arm_firmware_lib joy.launch.py
 }
 
 main
