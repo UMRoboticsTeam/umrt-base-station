@@ -48,7 +48,7 @@ main() {
   zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-hi.json5" &
 
   echo "[INFO - $(date +"%b %d %T")] Launching Arm Fireware"
-  ros2 launch umrt-arm-firmware-lib joy.launch.py
+  ros2 launch umrt_arm_firmware_lib joy.launch.py
 }
 
 main
