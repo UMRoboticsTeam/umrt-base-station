@@ -14,7 +14,7 @@ RUN mkdir -p /etc/apt/keyrings \
 RUN echo '#!/bin/sh\nexit 0' > /usr/local/bin/systemctl \
     && chmod +x /usr/local/bin/systemctl \
     && sudo apt-get update && sudo apt-get install -y --no-install-recommends \
-        zenoh-bridge-ros2dds=0.11.0 \
+        zenoh-bridge-ros2dds=1.3.4 \
     && rm -rf /var/lib/apt/lists/* \
     && rm /usr/local/bin/systemctl
 
