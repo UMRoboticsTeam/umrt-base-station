@@ -1,10 +1,6 @@
-<<<<<<< HEAD
-#!/usr/bin/env bash
-=======
 #!/bin/bash
 RED_TXT="\033[31m"
 RESET_TXT="\033[0m"
->>>>>>> 34b29f0 (Updated .gitignore to ignore .env folder and /build.sh script; Re-wrote Dockerfile to improve build times and to include all new required repositories; Add start scripts and tmp folder with all files to be delted in future revs. New start flow is autostart .desktop file -> runs localPc_onstart/basestation.sh -> runs start.sh)
 
 ################################
 # require_file
@@ -57,13 +53,9 @@ main() {
   
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Stack"
   echo "[INFO - $(date +"%b %d %T")] Checking File Requirements"
-<<<<<<< HEAD
-  require_file "${BRIDGE_WORKSPACE}/base-lo.json5"
-  require_file "${BRIDGE_WORKSPACE}/base-hi.json5"
-=======
+
   require_file "${BRIDGE_WORKSPACE}/config/base-lo.json5"
   require_file "${BRIDGE_WORKSPACE}/config/base-hi.json5"
->>>>>>> 34b29f0 (Updated .gitignore to ignore .env folder and /build.sh script; Re-wrote Dockerfile to improve build times and to include all new required repositories; Add start scripts and tmp folder with all files to be delted in future revs. New start flow is autostart .desktop file -> runs localPc_onstart/basestation.sh -> runs start.sh)
 
   echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
   ros2 launch foxglove_bridge foxglove_bridge_launch.xml address:=0.0.0.0 port:=8765 &
@@ -74,16 +66,11 @@ main() {
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
   zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-hi.json5" > /dev/null &
 
-<<<<<<< HEAD
-  echo "[INFO - $(date +"%b %d %T")] Launching Arm Fireware -- RMed"
-  ##ros2 launch umrt_arm_firmware_lib joy.launch.py
-=======
   echo "[INFO - $(date +"%b %d %T")] Launching Arm Firmware"
   ros2 launch umrt-arm-ros-firmware joy.launch.py &
   
   echo "[INFO - $(date +"%b %d %T")] Base-station Launch Complete Successfuls"
   c_exit
->>>>>>> 34b29f0 (Updated .gitignore to ignore .env folder and /build.sh script; Re-wrote Dockerfile to improve build times and to include all new required repositories; Add start scripts and tmp folder with all files to be delted in future revs. New start flow is autostart .desktop file -> runs localPc_onstart/basestation.sh -> runs start.sh)
 }
 
 main
