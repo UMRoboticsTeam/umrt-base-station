@@ -12,7 +12,7 @@ L_MON_NAME=Virtual-1
 R_MON_NAME=Virtual-1
 
 # Docker StartFile Location
-
+DOCKER_LAUNCH_FILE="/path/to/dir/start.sh"
 
 ##########################
 # openFoxglove
@@ -29,10 +29,8 @@ openFoxglove() {
   encodedConUrl=$(urlEncode "$2")
 
   cp -r "$HOME/.config/Foxglove" "$4"
-  foxglove-studio "foxglove://open?ds=foxglove-websocket&ds.url=$encodedConUrl&layoutId=$1" --user-data-dir="$4/" &
+  foxglove-studio "foxglove://open?ds=foxglove-websocket&ds.url=$encodedConUrl&layoutId=$1" --user-data-dir="$4/" > /dev/null &
   pid=$!
-  sleep 2
-  moveAndMaximize $pid "$5"
 }
 
 ########################
@@ -66,7 +64,16 @@ moveAndMaximize() {
 }
 
 
+########################
+# main
+#  The section of code that runs everytime
+#  Parameter (In ORDER): none
+#
+#  Returns: none
+#######################
 main() {
+  # Deleting all old Networks
+  docker network prune -f > /dev/null
   # Open Left
   openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFTT" "/tmp/fg_left" $L_MON_NAME
 
@@ -74,7 +81,8 @@ main() {
   openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIHGT" "/tmp/fg_right" $R_MON_NAME
 
   # Start Docker Container
-  source "$DOCKER_LAUNCH_FILE"
+  cd "$(dirname "$DOCKER_LAUNCH_FILE")"
+  $DOCKER_LAUNCH_FILE
 }
 
 main

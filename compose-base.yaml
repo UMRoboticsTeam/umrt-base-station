@@ -1,11 +1,7 @@
 name: bridge_base_stack
-
-x-ros-container: &ros_container
-  image: "${BRIDGE_BASE_IMAGE:-ghcr.io/umroboticsteam/umrt-build:comms-base-station}"
-
 services:
   bridge_base:
-    <<: *ros_container
+    image: "${BRIDGE_BASE_IMAGE:-localhost/umrt-base-station:latest}"
     container_name: bridge_base
     stdin_open: true
     tty: true
@@ -17,7 +13,7 @@ services:
     devices:
       - "/dev/input:/dev/input"
     volumes:
-      - "${REPO_DIR:-..}:/workspace/umrt-network-bridge-tests"
+      - "${RES_CONFIG_DIR:-./config}:/${BRIDGE_WORKSPACE:-/workspace/umrt-zenoh-bridge}/config"
     networks:
       bridge_lo:
         ipv4_address: 10.0.10.57
@@ -29,6 +25,24 @@ networks:
   foxglove_local:
     driver: bridge
   bridge_lo:
-    external: true
+    name: bridge_lo
+    driver: ipvlan
+    driver_opts:
+      ipvlan_mode: l2
+      parent: ens33.10
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.10.0/24
+          gateway: 10.0.10.1
   bridge_hi:
-    external: true
+    name: bridge_hi
+    driver: ipvlan
+    driver_opts:
+      ipvlan_mode: l2
+      parent: ens33.20
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.20.0/24
+          gateway: 10.0.20.1
