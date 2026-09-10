@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Layout Ids Left (L), Right (R)
 L_MON_LAY_ID=lay_0dnFp2e2BIrlEPXM
@@ -8,8 +8,8 @@ R_MON_LAY_ID=lay_0dnFpKLFbQUUqiva
 WS_CONN=ws://localhost:8765
 
 # Monitor Names
-L_MON_NAME=Virtual-1
-R_MON_NAME=Virtual-1
+L_MON_ID=0
+R_MON_ID=1
 
 # Docker StartFile Location
 DOCKER_LAUNCH_FILE="/path/to/dir/start.sh"
@@ -31,6 +31,7 @@ openFoxglove() {
   cp -r "$HOME/.config/Foxglove" "$4"
   foxglove-studio "foxglove://open?ds=foxglove-websocket&ds.url=$encodedConUrl&layoutId=$1" --user-data-dir="$4/" > /dev/null &
   pid=$!
+  moveAndMaximize $pid $5
 }
 
 ########################
@@ -60,7 +61,30 @@ urlEncode() {
 
 
 moveAndMaximize() {
-  echo "move and maximize window"
+  local pid=$1
+  local windowId=$2
+  
+  local line_num=$((windowId + 1))
+  local monitorLine=$(gdbus call --session --dest org.gnome.Mutter.DisplayConfig --object-path /org/gnome/Mutter/DisplayConfig --method org.gnome.Mutter.DisplayConfig.GetCurrentState | grep -o '\[([0-9].*)\], {.*layout-mode' | sed 's/), (/\n/g; s/[()\[]//g; s/, / /g' | sed -n "${line_num}p")
+  
+  XPOS=$(echo $monitorLine | awk '{print $1}')
+  YPOS=$(echo $monitorLine | awk '{print $2}')
+  
+  if [ -z "$XPOS" ] || [ -z "$YPOS" ] || [ "$XPOS" = "null" ] || [ "$YPOS" = "null" ]; then
+    echo "[WARN] No Monitor Found - Move Canceled"
+    return 1
+  fi
+  
+  sleep 2
+  local frameId=$(gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/Windows --method org.gnome.Shell.Extensions.Windows.List | sed "s/^('//;s/',)$//" | jq --argjson target_pid "$pid" '.[] | select(.pid == $target_pid) | .id')
+  
+  if [ -z "$frameId" ]; then
+    echo "[WARN] No Window Found - Move Canceled"
+    return 1
+  fi
+  
+  gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/Windows --method org.gnome.Shell.Extensions.Windows.Move $frameId $XPOS $YPOS > /dev/null
+  gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell/Extensions/Windows --method org.gnome.Shell.Extensions.Windows.Maximize $frameId > /dev/null
 }
 
 
@@ -75,10 +99,10 @@ main() {
   # Deleting all old Networks
   docker network prune -f > /dev/null
   # Open Left
-  openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFTT" "/tmp/fg_left" $L_MON_NAME
+  openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFTT" "/tmp/fg_left" $L_MON_ID
 
   # Open Right
-  openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIHGT" "/tmp/fg_right" $R_MON_NAME
+  openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIHGT" "/tmp/fg_right" $R_MON_ID
 
   # Start Docker Container
   cd "$(dirname "$DOCKER_LAUNCH_FILE")"

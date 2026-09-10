@@ -69,7 +69,7 @@ main() {
   echo "[INFO - $(date +"%b %d %T")] Launching Arm Firmware"
   ros2 launch umrt-arm-ros-firmware joy.launch.py &
   
-  echo "[INFO - $(date +"%b %d %T")] Base-station Launch Complete Successfuls"
+  echo "[INFO - $(date +"%b %d %T")] Base-station Launch Complete Successfully"
   c_exit
 }
 

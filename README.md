@@ -25,6 +25,48 @@ This image is intended to only include runtime dependencies and software used as
 ## Launching the image
 
 An example command is:
-`docker run --rm -it --name umrt-base --pull=always ghcr.io/umroboticsteam/umrt-base-station:main`  
+`docker run --rm -it --name umrt-base --pull=always ghcr.io/umroboticsteam/umrt-base-station:main`
 This always checks for and downloads the latest image before starting, which may or may not be the ideal behaviour.
 If a specific version is wanted, such as `v0.0.1`, simply change `umrt-base-station:main` to `umrt-base-station:v0.0.1`.
+
+## Setting up the Base Station Computer
+1. Pull/Download newest version of this Repository.
+2. Edit the `localPC_onStart\basestation.sh` file 
+    a. Change the following variables as needed:
+        `L_MON_LAY_ID/R_MON_LAY_ID`, this is the layout id foud in the foxglove url inside the query parameters. Ex: `?layoutId=lay_0dnFpKLFbQUUqiva`
+        `WS_CON`, this is where foxglove looks for new data.
+        `L_MON_ID/R_MON_ID`, this is the ids of the left and right monitor and can be found inside the settings on the device
+        `DOCKER_LAUNCH_FILE`, the location to start.sh which is found in this repo.
+3. Open the Extensions manager and install `Windows Calls` by domadoman. This allows the windows to be moved and managed on `Ubuntu Wayland`. This lacks the functionally to make it full-screen, look for new package or custom package in next version.
+4. Run the following command `cd /etc/netplan`, look for any config file something like `*-config.yaml` or `*-net-ctf.yaml`. Then open that file with your text editor. Edit this file and add the following, note that you must change ens33 to be your interface found in the ethernets section above.
+
+```  
+vlans:
+    ens33.10:
+      id: 10
+      link: ens33
+      dhcp4: false
+      addresses:
+        - 192.168.10.50/24
+      routes:
+        - to: default
+          via: 192.168.10.1
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+    ens33.20:
+      id: 20
+      link: ens33
+      dhcp4: false
+      addresses:
+        - 192.168.20.50/24
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8
+```
+
+5. Finally you need to change the docker compose file `compose-base.yaml` so that `ens33` becomes the name of your interface
+
+6. Restart and ensure that everything works.
