@@ -39,7 +39,7 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-foxglove-compressed-video-transport ros-humble-network-bridge ros-humble-usb-cam ros-humble-vision-msgs \
         ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-ffmpeg-image-transport \
         ros-humble-ffmpeg-image-transport-msgs ros-humble-umrt-arm-ros-firmware zenoh-bridge-ros2dds=1.3.4 \ 
-     && rm -rf /var/lib/apt/lists/*
+     && rm -rf /var/lib/apt/lists/* \
      && rm -f /etc/apt/sources.list.d/umrt_source.list
      
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
