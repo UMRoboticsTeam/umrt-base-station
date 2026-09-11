@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=UMRT BaseStartion Launcher
+Exec=bash /usr/local/launch_scripts/basestation.sh
+X-GNOME-Autostart-enabled=true
