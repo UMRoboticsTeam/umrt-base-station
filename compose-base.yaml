@@ -1,7 +1,7 @@
 name: bridge_base_stack
 services:
   bridge_base:
-    image: "${BRIDGE_BASE_IMAGE:-localhost/umrt-base-station:latest}"
+    image: "${BRIDGE_BASE_IMAGE:-ghcr.io/umroboticsteam/umrt-base-station:main}"
     container_name: bridge_base
     stdin_open: true
     tty: true
