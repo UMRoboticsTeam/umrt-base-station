@@ -37,10 +37,10 @@ If a specific version is wanted, such as `v0.0.1`, simply change `umrt-base-stat
         `WS_CON`, this is where foxglove looks for new data.
         `L_MON_ID/R_MON_ID`, this is the ids of the left and right monitor and can be found inside the settings on the device
         `DOCKER_LAUNCH_FILE`, the location to start.sh which is found in this repo.
-    b. Copy this file on to the pc
+    b. Copy this file on to the pc and make sure the file is executable. Make file executable `chmod a+x file.sh`.
 3. Copy `umrt_launch.desktop` to `~/.config/autostart/umrt_launch.desktop`. It's very important that the `autostart` folder is all lowercase. Edit this file to have to change the path to the launch file moved in step 2.
 4. Open the Extensions manager and install `Windows Calls` by domadoman. This allows the windows to be moved and managed on `Ubuntu Wayland`. This lacks the functionally to make it full-screen, look for new package or custom package in next version.
-5. Run the following command `cd /etc/netplan`, look for any config file something like `*-config.yaml` or `*-net-ctf.yaml`. Then open that file with your text editor. Edit this file and add the following, note that you must change ens33 to be your interface found in the Ethernets section above.
+5. Run the following command `cd /etc/netplan`, look for any config file something like `*-config.yaml` or `*-net-ctf.yaml`. Then open that file with your text editor. Edit this file and add the following, note that you must change ens33 to be your interface found in the Ethernets section above. Remove any set-name and match settings inside netplan. After making these changes run `sudo netplan try` and `sudo netplan apply`.
 
 ```  
 vlans:
