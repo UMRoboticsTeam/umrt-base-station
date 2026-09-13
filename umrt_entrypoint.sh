@@ -58,6 +58,10 @@ main() {
   require_file "${BRIDGE_WORKSPACE}/config/base-hi.json5"
 
   echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
+  ros2 run foxglove_bridge foxglove_bridge --ros-args \
+  -p address:=0.0.0.0 \
+  -p port:=8765 \
+  -p best_effort_qos_topic_whitelist:="['.*/hf$', '^/rover/poe/encoded_video$', '^/arm_cam0/image_raw/ffmpeg$', '^/camera$']" &echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
   ros2 launch foxglove_bridge foxglove_bridge_launch.xml address:=0.0.0.0 port:=8765 &
 
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low"
