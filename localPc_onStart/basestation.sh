@@ -98,6 +98,10 @@ moveAndMaximize() {
 main() {
   # Deleting all old Networks
   docker network prune -f > /dev/null
+
+  # Deleting all old Containers
+  docker container prune -f > /dev/null
+  
   # Open Left
   openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFTT" "/tmp/fg_left" $L_MON_ID
 
