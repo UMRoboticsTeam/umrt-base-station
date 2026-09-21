@@ -13,6 +13,7 @@ R_MON_ID=1
 
 # Docker StartFile Location
 DOCKER_LAUNCH_FILE="/path/to/dir/start.sh"
+CONN_INTERFACE="<<NETWORK INTERFACE>>"
 
 ##########################
 # openFoxglove
@@ -107,6 +108,12 @@ main() {
 
   # Open Right
   openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIHGT" "/tmp/fg_right" $R_MON_ID
+
+  # Waiting for network to be online before starting docker containers
+  while ! ip link show dev $CONN_INTERFACE | grep -q "state UP" ; do
+        sleep 1;
+        echo "sleeping"
+  done
 
   # Start Docker Container
   cd "$(dirname "$DOCKER_LAUNCH_FILE")"
