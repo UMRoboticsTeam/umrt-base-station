@@ -1,0 +1,48 @@
+name: bridge_base_stack
+services:
+  bridge_base:
+    image: "${BRIDGE_BASE_IMAGE:-ghcr.io/umroboticsteam/umrt-base-station:main}"
+    container_name: bridge_base
+    stdin_open: true
+    tty: true
+    init: true
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "${FOXGLOVE_HOST_BIND:-0.0.0.0}:8765:8765/tcp"
+    devices:
+      - "/dev/input:/dev/input"
+    volumes:
+      - "${RES_CONFIG_DIR:-./config}:/${BRIDGE_WORKSPACE:-/workspace/umrt-zenoh-bridge}/config"
+    networks:
+      bridge_lo:
+        ipv4_address: 10.0.10.57
+      bridge_hi:
+        ipv4_address: 10.0.20.57
+      foxglove_local: {}
+
+networks:
+  foxglove_local:
+    driver: bridge
+  bridge_lo:
+    name: bridge_lo
+    driver: ipvlan
+    driver_opts:
+      ipvlan_mode: l2
+      parent: ens33.10
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.10.0/24
+          gateway: 10.0.10.1
+  bridge_hi:
+    name: bridge_hi
+    driver: ipvlan
+    driver_opts:
+      ipvlan_mode: l2
+      parent: ens33.20
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.20.0/24
+          gateway: 10.0.20.1

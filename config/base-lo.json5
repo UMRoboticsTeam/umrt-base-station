@@ -1,0 +1,37 @@
+{
+  id: "ba5e10",
+  mode: "router",
+  listen: {
+    endpoints: [
+      "tcp/10.0.10.57:7447",
+    ],
+  },
+  scouting: {
+    multicast: {
+      enabled: false,
+    },
+    gossip: {
+      enabled: false,
+    },
+  },
+  plugins: {
+    ros2dds: {
+      nodename: "zenoh_bridge_base_lo",
+      ros_localhost_only: false,
+      allow: {
+        publishers: [
+          "^/rover_controller/cmd_vel_unstamped$",
+          "^/controls$",
+        ],
+        subscribers: [
+          "^/rover/poe/imu$",
+          "^/telemetry$",
+        ],
+        service_servers: [],
+        service_clients: [],
+        action_servers: [],
+        action_clients: [],
+      },
+    },
+  },
+}
