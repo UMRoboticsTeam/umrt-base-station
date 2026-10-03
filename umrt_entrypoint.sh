@@ -59,6 +59,9 @@ main() {
 
   echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
   ros2 run foxglove_bridge foxglove_bridge --ros-args \
+  -p send_buffer_limit:=5000000 \
+  -p use_compression:=false \
+  -p max_qos_depth:=1 \
   -p address:=0.0.0.0 \
   -p port:=8765 \
   -p best_effort_qos_topic_whitelist:='[".*/hf$", "^/rover/poe/encoded_video$", "^/arm_cam0/image_raw/ffmpeg$", "^/camera$"]' &
