@@ -1,0 +1,36 @@
+{
+  "mode": "peer",
+  "id": "ba5e002000",
+  "scouting": {
+    "multicast": { "enabled": false },
+    "gossip": { "enabled": false }
+  },
+  "listen": {
+    "endpoints": [
+      "udp/10.0.20.221:7447?rel=1&mixed_rel=1&multistream=auto"
+    ]
+  },
+  "connect": {
+    "endpoints": [
+      "udp/10.0.20.121:7447?rel=1&mixed_rel=1&multistream=auto"
+    ]
+  },
+  "plugins": {
+    "ros2dds": {
+      "nodename": "base_hi",
+      "ros_localhost_only": false,
+      "allow": {
+        "publishers": [
+          "^/hi/.*$"
+        ],
+        "subscribers": [
+          "^/hi/.*$"
+        ],
+        "service_servers": [],
+        "service_clients": [],
+        "action_servers": [],
+        "action_clients": []
+      }
+    }
+  }
+}
