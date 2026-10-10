@@ -10,8 +10,8 @@
   },
   "connect": {
     "endpoints": [
-      "udp/10.0.10.21:7447?rel=1&mixed_rel=1&multistream=auto",
-      "udp/10.0.20.21:7447?rel=1&mixed_rel=1&multistream=auto"
+      "udp/10.0.10.121:7447?rel=1&mixed_rel=1&multistream=auto",
+      "udp/10.0.20.121:7447?rel=1&mixed_rel=1&multistream=auto"
     ]
   },
   "plugins": {
