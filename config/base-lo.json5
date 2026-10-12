@@ -1,6 +1,7 @@
 {
   id: "ba5e10",
   mode: "router",
+  timestaming: { "enable" : false }, 
   listen: {
     endpoints: [
       "tcp/10.0.10.57:7447",
