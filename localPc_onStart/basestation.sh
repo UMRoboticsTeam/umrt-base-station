@@ -104,10 +104,10 @@ main() {
   docker container prune -f > /dev/null
   
   # Open Left
-  openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFTT" "/tmp/fg_left" $L_MON_ID
+  openFoxglove $L_MON_LAY_ID $WS_CONN "MON_LEFT" "/tmp/fg_left" $L_MON_ID
 
   # Open Right
-  openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIHGT" "/tmp/fg_right" $R_MON_ID
+  openFoxglove $R_MON_LAY_ID $WS_CONN "MON_RIGHT" "/tmp/fg_right" $R_MON_ID
 
   # Waiting for network to be online before starting docker containers
   while ! ip link show dev $CONN_INTERFACE | grep -q "state UP" ; do
