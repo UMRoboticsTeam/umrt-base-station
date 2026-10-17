@@ -13,7 +13,21 @@
     "endpoints": [
       "udp/10.0.20.121:7447?rel=1&mixed_rel=1&multistream=auto",
       "udp/10.0.10.121:7447?rel=1&mixed_rel=1&multistream=auto"
-    ]
+    ],
+    "exit_on_failure": false,
+    "retry": {
+      "period_init_ms": 200,
+      "period_max_ms": 1000,
+      "period_increase_factor": 1.5
+    }
+  },
+  "transport": {
+    "link": {
+      "tx": {
+        "lease": 2000,
+        "keep_alive": 4
+      }
+    }
   },
   "plugins": {
     "ros2dds": {
