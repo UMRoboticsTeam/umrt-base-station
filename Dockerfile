@@ -40,10 +40,10 @@ RUN --mount=type=secret,id=apt_auth_conf,target=/etc/apt/auth.conf.d/umrt.conf \
         ros-humble-image-transport ros-humble-image-transport-plugins ros-humble-ffmpeg-image-transport \
         ros-humble-ffmpeg-image-transport-msgs ros-humble-umrt-arm-ros-firmware zenoh-bridge-ros2dds=1.3.4 \ 
      && rm -rf /var/lib/apt/lists/* \
-     && rm -f /etc/apt/sources.list.d/umrt_source.list
+     && rm -f /etc/apt/sources.list.d/umrt_source.list \
+     && rm -f /etc/apt/sources.list.d/*
      
 COPY umrt_entrypoint.sh /umrt_entrypoint.sh
-COPY /tmp/joy.launch.py /opt/ros/humble/share/umrt-arm-ros-firmware/launch
 RUN chmod +x /umrt_entrypoint.sh
 
 ENTRYPOINT ["/umrt_entrypoint.sh"]

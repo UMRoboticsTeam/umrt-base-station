@@ -54,24 +54,35 @@ main() {
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Stack"
   echo "[INFO - $(date +"%b %d %T")] Checking File Requirements"
 
-  require_file "${BRIDGE_WORKSPACE}/config/base-lo.json5"
-  require_file "${BRIDGE_WORKSPACE}/config/base-hi.json5"
+  require_file "${BRIDGE_WORKSPACE}/config/base_lo.json"
+  require_file "${BRIDGE_WORKSPACE}/config/base_hi.json"
+  require_file "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json"
+  require_file "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json"
 
   echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
   ros2 run foxglove_bridge foxglove_bridge --ros-args \
+  -p send_buffer_limit:=5000000 \
+  -p use_compression:=false \
+  -p max_qos_depth:=1 \
   -p address:=0.0.0.0 \
   -p port:=8765 \
-  -p best_effort_qos_topic_whitelist:='[".*/hf$", "^/rover/poe/encoded_video$", "^/arm_cam0/image_raw/ffmpeg$", "^/camera$"]' &
-  
+  -p best_effort_qos_topic_whitelist:="['.*/hf$', '^/rover/poe/encoded_video$', '^/arm_cam0/image_raw/ffmpeg$', '^/camera$']" &
+
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-lo.json5" > /dev/null &
+  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo.json" > /dev/null &
 
   echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base-hi.json5" > /dev/null &
+  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi.json" > /dev/null &
+
+  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High Fail Low"
+  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json" > /dev/null &
+
+  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low Fail High"
+  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json" > /dev/null &
 
   echo "[INFO - $(date +"%b %d %T")] Launching Arm Firmware"
   ros2 launch umrt-arm-ros-firmware joy.launch.py &
-  
+
   echo "[INFO - $(date +"%b %d %T")] Base-station Launch Complete Successfully"
   c_exit
 }
