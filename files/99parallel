@@ -1,0 +1,2 @@
+Acquire::Queue-Mode "host";
+Acquire::http::Pipeline-Depth "5";

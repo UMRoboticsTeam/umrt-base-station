@@ -72,3 +72,16 @@ vlans:
 5. Finally you need to change the docker compose file `compose-base.yaml` so that `ens33` becomes the name of your interface
 
 6. Restart and ensure that everything works.
+
+## Enabling and Disabling Certain Functions
+
+You can enable/disable certain function of the base station from starting by adding the environment variables in the compose file are set to true/false. Currently these are the functions you can enable:
+
+BOOT_FOXGLOVE:  should foxglove bridge start
+BOOT_JOYSTICK: should the joystick modules start
+BOOT_LO_NET: should the low network start
+BOOT_HI_NET: should the high network start
+BOOT_HI_F_LO_NET: should the high fail low network start
+BOOT_LO_F_HI_NET: should the low fail high network start
+BOOT_LOC_NET: should the local network start
+BOOT_ALL_NET: should the all fail over network start

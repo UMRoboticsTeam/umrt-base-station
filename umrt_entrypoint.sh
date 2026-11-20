@@ -50,39 +50,59 @@ main() {
 
   echo "[INFO - $(date +"%b %d %T")] Sourcing ros_entrypoint.sh"
   source ./ros_entrypoint.sh
+
+  if [ "$BOOT_FOXGLOVE" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
+	ros2 run foxglove_bridge foxglove_bridge --ros-args \
+	  -p send_buffer_limit:=5000000 \
+	  -p use_compression:=false \
+	  -p max_qos_depth:=1 \
+	  -p address:=0.0.0.0 \
+	  -p port:=8765 \
+	  -p best_effort_qos_topic_whitelist:="['.*/hf$', '^/rover/poe/encoded_video$', '^/arm_cam0/image_raw/ffmpeg$', '^/camera$']" &
+  fi
+
+  if [ "$BOOT_LO_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low"
+	require_file "${BRIDGE_WORKSPACE}/config/base_lo.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo.json" > /dev/null &
+  fi
   
-  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Stack"
-  echo "[INFO - $(date +"%b %d %T")] Checking File Requirements"
+  if [ "$BOOT_HI_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
+  	require_file "${BRIDGE_WORKSPACE}/config/base_hi.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi.json" > /dev/null &
+  fi
 
-  require_file "${BRIDGE_WORKSPACE}/config/base_lo.json"
-  require_file "${BRIDGE_WORKSPACE}/config/base_hi.json"
-  require_file "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json"
-  require_file "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json"
+  if [ "$BOOT_HI_F_LO_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High Fail Low"
+  	require_file "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json" > /dev/null &
+  fi
 
-  echo "[INFO - $(date +"%b %d %T")] Launching Foxglove Bridge"
-  ros2 run foxglove_bridge foxglove_bridge --ros-args \
-  -p send_buffer_limit:=5000000 \
-  -p use_compression:=false \
-  -p max_qos_depth:=1 \
-  -p address:=0.0.0.0 \
-  -p port:=8765 \
-  -p best_effort_qos_topic_whitelist:="['.*/hf$', '^/rover/poe/encoded_video$', '^/arm_cam0/image_raw/ffmpeg$', '^/camera$']" &
+  if [ "$BOOT_LO_F_HI_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low Fail High"
+  	require_file "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json" > /dev/null &
+  fi
+  
+  if [ "$BOOT_LOC_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Local"
+  	require_file "${BRIDGE_WORKSPACE}/config/base_loc.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_loc.json" > /dev/null &
+  fi
+  
+  if [ "$BOOT_ALL_NET" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base All"
+  	require_file "${BRIDGE_WORKSPACE}/config/base_all.json"
+  	zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_all.json" > /dev/null &
+  fi
 
-  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo.json" > /dev/null &
-
-  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi.json" > /dev/null &
-
-  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base High Fail Low"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_hi_f_lo.json" > /dev/null &
-
-  echo "[INFO - $(date +"%b %d %T")] Launching Zenoh Base Low Fail High"
-  zenoh-bridge-ros2dds -c "${BRIDGE_WORKSPACE}/config/base_lo_f_hi.json" > /dev/null &
-
-  echo "[INFO - $(date +"%b %d %T")] Launching Arm Firmware"
-  ros2 launch umrt-arm-ros-firmware joy.launch.py &
-
+  if [ "$BOOT_JOYSTICK" != "false" ]; then
+  	echo "[INFO - $(date +"%b %d %T")] Launching Arm Firmware"
+  	ros2 launch umrt-arm-ros-firmware joy.launch.py &
+  fi
+  
   echo "[INFO - $(date +"%b %d %T")] Base-station Launch Complete Successfully"
   c_exit
 }

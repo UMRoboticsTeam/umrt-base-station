@@ -9,6 +9,16 @@ services:
     privileged: true
     cap_add:
       - NET_ADMIN
+    environment:
+      BOOT_FOXGLOVE:  true
+      BOOT_JOYSTICK: true
+      
+      BOOT_LO_NET: true
+      BOOT_HI_NET: true
+      BOOT_HI_F_LO_NET: true
+      BOOT_LO_F_HI_NET: true
+      BOOT_LOC_NET: true
+      BOOT_ALL_NET: true
     ports:
       - "${FOXGLOVE_HOST_BIND:-0.0.0.0}:8765:8765/tcp"
       - 0.0.0.0:8080:8080/tcp
@@ -23,7 +33,6 @@ services:
       bridge_hi:
         ipv4_address: 10.0.20.21
       foxglove_local: {}
-
 networks:
   foxglove_local:
     driver: bridge

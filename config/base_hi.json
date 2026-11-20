@@ -1,6 +1,6 @@
 {
   "mode": "peer",
-  "id": "ba5e002000",
+  "id": "ba5e00200000",
   "scouting": {
     "multicast": { "enabled": false },
     "gossip": { "enabled": false }
